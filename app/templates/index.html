@@ -1,0 +1,308 @@
+{% extends 'layout.html' %}
+
+{% block title %}PREDICROP — AI-Powered Smart Crop Management{% endblock %}
+
+{% block body %}
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero" aria-label="Hero section">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="hero-overlay" aria-hidden="true"></div>
+  <div class="hero-grid-bg" aria-hidden="true"></div>
+
+  <div class="container hero-content">
+
+    <!-- Left -->
+    <div class="hero-left">
+
+      <div class="hero-badge">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        AI-POWERED AGRICULTURE
+      </div>
+
+      <h1 class="hero-title">
+        Know Your Field.<br>
+        <em>Grow With Confidence.</em>
+      </h1>
+
+      <p class="hero-subtitle">
+        PREDICROP combines soil data, weather intelligence and machine learning to help farmers make better crop, fertilizer and crop-health decisions.
+      </p>
+
+      <div class="hero-actions">
+        <a href="{{ url_for('crop_recommend') }}" class="btn btn-primary btn-lg">
+          Analyze My Field
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+        <a href="#features" class="btn btn-secondary btn-lg">Explore AI Tools</a>
+      </div>
+
+      <div class="hero-trust" aria-label="Key features">
+        <div class="hero-trust-item">
+          <span class="hero-trust-icon" aria-hidden="true">🌾</span>
+          AI Crop Recommendation
+        </div>
+        <div class="hero-trust-item">
+          <span class="hero-trust-icon" aria-hidden="true">🔬</span>
+          Disease Detection via Deep Learning
+        </div>
+        <div class="hero-trust-item">
+          <span class="hero-trust-icon" aria-hidden="true">⛅</span>
+          5-Day Local Weather Forecast
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right — data panel -->
+    <div class="hero-right" aria-hidden="true">
+      <div class="hero-panel">
+        <div class="hero-field-visual">
+          <img src="{{ url_for('static', filename='images/hero-agriculture.jpg') }}"
+               alt="Aerial crop field" class="hero-field-img" loading="eager">
+          <div class="hero-scan-line"></div>
+          <div class="hero-data-cards">
+            <div class="hdc">
+              <span class="hdc-label">N</span>
+              <span class="hdc-value">90</span>
+            </div>
+            <div class="hdc">
+              <span class="hdc-label">pH</span>
+              <span class="hdc-value">6.5</span>
+            </div>
+            <div class="hdc">
+              <span class="hdc-label">P</span>
+              <span class="hdc-value">42</span>
+            </div>
+            <div class="hdc">
+              <span class="hdc-label">Rainfall</span>
+              <span class="hdc-value">200<small style="font-size:0.6rem;opacity:0.7">mm</small></span>
+            </div>
+            <div class="hdc">
+              <span class="hdc-label">K</span>
+              <span class="hdc-value">43</span>
+            </div>
+          </div>
+          <div class="hero-ai-label">
+            <span style="display:inline-block;width:6px;height:6px;background:var(--lime);border-radius:50%;animation:pulseDot 2s infinite;"></span>
+            AI FIELD INTELLIGENCE
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="hero-scroll-arrow"></div>
+    Scroll
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FEATURES
+============================================================ -->
+<section id="features" class="section-pad" style="background:var(--warm-white);" aria-labelledby="features-title">
+  <div class="container">
+
+    <div class="section-header centered fade-up">
+      <span class="section-eyebrow">Platform Features</span>
+      <h2 class="section-title" id="features-title">One Field. Complete Intelligence.</h2>
+      <p class="section-description">Four AI-powered tools to cover every dimension of smart crop management.</p>
+    </div>
+
+    <div class="features-grid">
+
+      <a href="{{ url_for('crop_recommend') }}" class="feature-card fade-up fade-up-d1" aria-label="Crop AI — Crop recommendation">
+        <div class="feature-card-img">
+          <img src="{{ url_for('static', filename='images/crop.jpg') }}" alt="Green crop field" loading="lazy">
+          <div class="feature-card-img-overlay" aria-hidden="true"></div>
+          <span class="feature-card-num">01</span>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 22V12m0 0c0-5 3.5-8 8-8.5-1 5-3.5 8-8 8.5Z"/><path d="M12 16c0-4-2.5-6.5-7-7 .8 4.2 3 7 7 7Z"/></svg>
+          </div>
+          <h3 class="feature-card-title">Crop AI</h3>
+          <p class="feature-card-desc">Find the crop your soil can actually support — powered by a trained RandomForest model.</p>
+          <span class="feature-card-arrow">
+            Analyze soil
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="{{ url_for('fertilizer_recommendation') }}" class="feature-card fade-up fade-up-d2" aria-label="Fertilizer AI — Fertilizer recommendation">
+        <div class="feature-card-img">
+          <img src="{{ url_for('static', filename='images/fertilizer.jpg') }}" alt="Healthy crop rows" loading="lazy">
+          <div class="feature-card-img-overlay" aria-hidden="true"></div>
+          <span class="feature-card-num">02</span>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2m-3.22-7.78 1.42-1.42M4.22 19.78l1.42-1.42"/></svg>
+          </div>
+          <h3 class="feature-card-title">Fertilizer AI</h3>
+          <p class="feature-card-desc">Know what nutrients your field actually needs — no more guesswork on soil amendments.</p>
+          <span class="feature-card-arrow">
+            Get advice
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="{{ url_for('disease_prediction') }}" class="feature-card fade-up fade-up-d3" aria-label="Disease Detection — plant disease analysis">
+        <div class="feature-card-img">
+          <img src="{{ url_for('static', filename='images/disease.png') }}" alt="Plant leaf close-up" loading="lazy">
+          <div class="feature-card-img-overlay" aria-hidden="true"></div>
+          <span class="feature-card-num">03</span>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="m22 11-9-9-9 9v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9Z"/><path d="M9 22V12h6v10"/></svg>
+          </div>
+          <h3 class="feature-card-title">Disease Detection</h3>
+          <p class="feature-card-desc">Identify 38 crop diseases from a single leaf photo using our ResNet9 deep learning model.</p>
+          <span class="feature-card-arrow">
+            Upload leaf
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <a href="{{ url_for('weather') }}" class="feature-card fade-up fade-up-d4" aria-label="Weather Intelligence — 5-day forecast">
+        <div class="feature-card-img">
+          <img src="{{ url_for('static', filename='images/weather.jpg') }}" alt="Sky and weather" loading="lazy">
+          <div class="feature-card-img-overlay" aria-hidden="true"></div>
+          <span class="feature-card-num">04</span>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg>
+          </div>
+          <h3 class="feature-card-title">Weather Intelligence</h3>
+          <p class="feature-card-desc">Plan your next farming days with hyper-local weather data and a 5-day forecast.</p>
+          <span class="feature-card-arrow">
+            Check weather
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     HOW IT WORKS
+============================================================ -->
+<section class="section-pad" style="background:var(--gray-100);" aria-labelledby="how-title">
+  <div class="container">
+
+    <div class="section-header centered fade-up">
+      <span class="section-eyebrow">Process</span>
+      <h2 class="section-title" id="how-title">How PREDICROP Works</h2>
+      <p class="section-description">From raw field data to an actionable recommendation — in seconds.</p>
+    </div>
+
+    <div class="process-steps">
+
+      <div class="process-step fade-up fade-up-d1">
+        <div class="process-num">01</div>
+        <h3 class="process-step-title">Enter Field Data</h3>
+        <p class="process-step-desc">Input your soil N, P, K values, pH, rainfall, and city location.</p>
+      </div>
+
+      <div class="process-step fade-up fade-up-d2">
+        <div class="process-num">02</div>
+        <h3 class="process-step-title">AI Analyzes</h3>
+        <p class="process-step-desc">Our machine learning models process soil chemistry and local weather data.</p>
+      </div>
+
+      <div class="process-step fade-up fade-up-d3">
+        <div class="process-num">03</div>
+        <h3 class="process-step-title">Get Recommendation</h3>
+        <p class="process-step-desc">Receive a clear, data-backed crop or fertilizer recommendation.</p>
+      </div>
+
+      <div class="process-step fade-up fade-up-d4">
+        <div class="process-num">04</div>
+        <h3 class="process-step-title">Take Action</h3>
+        <p class="process-step-desc">Apply the insights to your field. Better decisions, better harvests.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ============================================================
+     STATS
+============================================================ -->
+<section class="section-pad-sm" style="background:var(--warm-white);" aria-label="Platform statistics">
+  <div class="container">
+    <div class="stats-row fade-up">
+      <div class="stat-item">
+        <div class="stat-number" data-count="38"><span>38</span>+</div>
+        <p class="stat-label">Disease classes detected</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-count="22"><span>22</span></div>
+        <p class="stat-label">Crop recommendations available</p>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-count="5"><span>5</span>-Day</div>
+        <p class="stat-label">Weather forecast precision</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     SOIL INTELLIGENCE CTA
+============================================================ -->
+<section class="section-pad" style="background:var(--warm-white);" aria-labelledby="soil-cta-title">
+  <div class="container">
+    <div style="background:var(--forest);border-radius:var(--radius-xl);padding:clamp(2rem,5vw,4rem);display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;position:relative;overflow:hidden;" class="fade-up">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(183,217,87,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(183,217,87,0.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;" aria-hidden="true"></div>
+      <div style="position:relative;z-index:1;">
+        <span class="section-eyebrow" style="color:var(--lime);">SOIL INTELLIGENCE</span>
+        <h2 id="soil-cta-title" class="section-title light" style="margin-top:0.75rem;">Know Your Soil.<br>Feed It Right.</h2>
+        <p style="color:rgba(255,255,255,0.6);font-size:1.0625rem;line-height:1.7;max-width:520px;margin-top:1rem;">
+          Understanding N, P, K and soil pH is the first step to a productive season. Explore our soil knowledge base to understand what your soil is telling you.
+        </p>
+      </div>
+      <div style="position:relative;z-index:1;flex-shrink:0;">
+        <a href="{{ url_for('addinfo') }}" class="btn btn-primary btn-lg">Explore Soil Guide</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FINAL CTA
+============================================================ -->
+<section class="cta-section" aria-labelledby="cta-title">
+  <div class="cta-inner fade-up">
+    <span class="section-eyebrow" style="justify-content:center;color:var(--lime);">GET STARTED</span>
+    <h2 class="cta-title" id="cta-title">
+      Your Field Has Data.<br>
+      <em>PREDICROP Turns It Into Decisions.</em>
+    </h2>
+    <p class="cta-sub">
+      Enter your soil readings and let AI do the analysis. It takes under 30 seconds.
+    </p>
+    <a href="{{ url_for('crop_recommend') }}" class="btn btn-primary btn-lg">
+      Start Field Analysis →
+    </a>
+  </div>
+</section>
+
+{% endblock %}

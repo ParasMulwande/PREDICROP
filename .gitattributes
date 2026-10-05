@@ -1,0 +1,21 @@
+# Normalise line endings so the repo behaves the same on Windows and Linux.
+* text=auto
+
+*.py    text diff=python
+*.html  text diff=html
+*.css   text diff=css
+*.js    text diff=js
+*.md    text diff=markdown
+*.csv   text
+*.txt   text
+
+# Binary assets - never let git try to normalise or diff these.
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.gif   binary
+*.ico   binary
+*.pth   binary
+*.pkl   binary
+*.pt    binary
+*.onnx  binary

@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block title %}Fertilizer Recommendation — PREDICROP{% endblock %}
+
+{% block body %}
+
+<div style="background:var(--forest);padding:var(--space-20) 0 calc(var(--space-20) + 60px);position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(183,217,87,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(183,217,87,0.04) 1px,transparent 1px);background-size:48px 48px;" aria-hidden="true"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);display:flex;align-items:center;gap:8px;margin-bottom:var(--space-4);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2"/></svg>
+      FERTILIZER AI RESULT
+    </div>
+    <h1 style="font-family:var(--font-heading);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:800;color:var(--white);letter-spacing:-0.03em;line-height:1.1;">Fertilizer Recommendation</h1>
+  </div>
+</div>
+
+<div style="background:var(--warm-white);padding-bottom:var(--space-20);">
+  <div class="container" style="max-width:800px;margin-top:-60px;position:relative;z-index:2;">
+
+    <div class="result-card-elevated">
+
+      <div style="text-align:center;padding:var(--space-8) 0 var(--space-6);border-bottom:1px solid var(--gray-200);margin-bottom:var(--space-8);">
+        <span style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber-dark);display:block;margin-bottom:var(--space-3);">CROP ANALYZED</span>
+        <div style="font-family:var(--font-heading);font-size:clamp(1.5rem,4vw,2.5rem);font-weight:800;color:var(--forest);letter-spacing:-0.03em;text-transform:capitalize;">
+          {{ crop_name }}
+        </div>
+      </div>
+
+      <p style="font-size:1rem;color:var(--gray-600);line-height:1.7;margin-bottom:var(--space-8);text-align:center;">
+        Based on the nutrient values provided, PREDICROP identified the nutrient most out of balance for <strong>{{ crop_name }}</strong> and generated the following guidance.
+      </p>
+
+      <div class="result-fertilizer-content">
+        <h4>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:-2px;margin-right:5px;"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2m-3.22-7.78 1.42-1.42M4.22 19.78l1.42-1.42"/></svg>
+          FERTILIZER RECOMMENDATION
+        </h4>
+        <div style="font-size:0.9375rem;color:var(--charcoal);line-height:1.75;">
+          {{ recommendation }}
+        </div>
+      </div>
+
+      <div class="result-actions-row">
+        <a href="{{ url_for('fertilizer_recommendation') }}" class="btn btn-forest btn-lg">
+          Try Another Crop
+        </a>
+        <a href="{{ url_for('home') }}" class="btn btn-ghost-dark">
+          Back to Home
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

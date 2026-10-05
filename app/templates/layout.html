@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}PREDICROP — AI-Powered Crop Intelligence{% endblock %}</title>
+  <meta name="description" content="PREDICROP combines soil data, weather intelligence and machine learning to help farmers make better crop, fertilizer and crop-health decisions.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='6' fill='%23123B2A'/%3E%3Crect x='10' y='26' width='20' height='3' rx='1.5' fill='%23B7D957'/%3E%3Cpath d='M20 24V14' stroke='%23F7F8F2' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M20 17c0-4 3-6 6-6.5-.8 3.5-2.6 5.5-6 6.5Z' fill='%23B7D957'/%3E%3Cpath d='M20 20c0-3-2-4.5-5-4.8.6 2.8 2 4.5 5 4.8Z' fill='%23B7D957' opacity='0.6'/%3E%3C/svg%3E">
+
+  <!-- Fonts (Manrope + Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+
+  <!-- PREDICROP v2 Design System -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css2/predicrop-v2.css') }}">
+
+  <!-- Cities JS (unchanged) -->
+  <script type="text/javascript" src="{{ url_for('static', filename='scripts/cities.js') }}"></script>
+
+  {% block head_extra %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+  ============================================================ -->
+
+  {% set ep = request.endpoint %}
+
+  <nav class="pnav" id="pnav" role="navigation" aria-label="Main navigation">
+    <div class="container pnav-inner">
+
+      <!-- Brand -->
+      <a href="{{ url_for('home') }}" class="pnav-brand" aria-label="PREDICROP home">
+        <div class="pnav-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="18" width="20" height="3" rx="1.5" fill="#123B2A"/>
+            <path d="M12 17V9" stroke="#123B2A" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M12 12c0-3.5 2.5-5.5 5.5-6-.8 3-2.5 5-5.5 6Z" fill="#123B2A"/>
+            <path d="M12 14.5c0-2.5-1.8-4-4.5-4.3.5 2.4 1.8 4 4.5 4.3Z" fill="#123B2A" opacity="0.6"/>
+          </svg>
+        </div>
+        <span class="pnav-name">PREDICROP</span>
+        <span class="pnav-ai-badge">AI</span>
+      </a>
+
+      <!-- Desktop nav links -->
+      <div class="pnav-links" id="pnav-links">
+        <a href="{{ url_for('home') }}" class="pnav-link {{ 'active' if ep == 'home' }}" {{ 'aria-current=page' if ep == 'home' }}>Home</a>
+        <a href="{{ url_for('crop_recommend') }}" class="pnav-link {{ 'active' if ep in ['crop_recommend','crop_prediction'] }}" {{ 'aria-current=page' if ep in ['crop_recommend','crop_prediction'] }}>Crop AI</a>
+        <a href="{{ url_for('fertilizer_recommendation') }}" class="pnav-link {{ 'active' if ep in ['fertilizer_recommendation','fert_recommend'] }}" {{ 'aria-current=page' if ep in ['fertilizer_recommendation','fert_recommend'] }}>Fertilizer</a>
+        <a href="{{ url_for('disease_prediction') }}" class="pnav-link {{ 'active' if ep == 'disease_prediction' }}" {{ 'aria-current=page' if ep == 'disease_prediction' }}>Disease</a>
+        <a href="{{ url_for('weather') }}" class="pnav-link {{ 'active' if ep in ['weather','weather_api'] }}" {{ 'aria-current=page' if ep in ['weather','weather_api'] }}>Weather</a>
+        <a href="{{ url_for('addinfo') }}" class="pnav-link {{ 'active' if ep == 'addinfo' }}" {{ 'aria-current=page' if ep == 'addinfo' }}>Soil</a>
+      </div>
+
+      <!-- Right side -->
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="ai-status">
+          <span class="ai-status-dot"></span>
+          AI Active
+        </div>
+
+        <!-- Language -->
+        <div class="pnav-lang">
+          <button class="pnav-lang-btn" aria-haspopup="true" aria-expanded="false" id="langBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10A15.3 15.3 0 0 1 8 12 15.3 15.3 0 0 1 12 2z"/>
+            </svg>
+            Language
+          </button>
+          <div class="pnav-lang-dropdown" id="langDropdown">
+            <div id="google_translate_element"></div>
+          </div>
+        </div>
+
+        <a href="{{ url_for('crop_recommend') }}" class="pnav-cta">
+          Analyze Field
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+
+        <!-- Mobile toggle -->
+        <button class="pnav-toggle" id="pnav-toggle" aria-controls="pnav-mobile-drawer" aria-expanded="false" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Mobile drawer -->
+  <div class="pnav-mobile-drawer" id="pnav-mobile-drawer" aria-hidden="true">
+    <nav class="pnav-mobile-links" aria-label="Mobile navigation">
+      <a href="{{ url_for('home') }}" class="pnav-mobile-link {{ 'active' if ep == 'home' }}">Home</a>
+      <a href="{{ url_for('crop_recommend') }}" class="pnav-mobile-link {{ 'active' if ep in ['crop_recommend','crop_prediction'] }}">Crop AI</a>
+      <a href="{{ url_for('fertilizer_recommendation') }}" class="pnav-mobile-link {{ 'active' if ep in ['fertilizer_recommendation','fert_recommend'] }}">Fertilizer</a>
+      <a href="{{ url_for('disease_prediction') }}" class="pnav-mobile-link {{ 'active' if ep == 'disease_prediction' }}">Disease Detection</a>
+      <a href="{{ url_for('weather') }}" class="pnav-mobile-link {{ 'active' if ep in ['weather','weather_api'] }}">Weather</a>
+      <a href="{{ url_for('addinfo') }}" class="pnav-mobile-link {{ 'active' if ep == 'addinfo' }}">Soil Information</a>
+    </nav>
+    <div id="google_translate_element_mobile" class="lang-mirror-wrap"></div>
+    <a href="{{ url_for('crop_recommend') }}" class="pnav-mobile-cta">Analyze My Field →</a>
+  </div>
+
+
+  <!-- ============================================================
+       PAGE CONTENT
+  ============================================================ -->
+
+  <main>
+    {% block body %}{% endblock %}
+  </main>
+
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+
+  <footer class="pfoot" role="contentinfo">
+    <div class="container">
+      <div class="pfoot-top">
+
+        <div class="pfoot-brand-col">
+          <div class="pfoot-brand">
+            <div class="pfoot-logo" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
+                <rect x="2" y="18" width="20" height="3" rx="1.5" fill="#123B2A"/>
+                <path d="M12 17V9" stroke="#123B2A" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M12 12c0-3.5 2.5-5.5 5.5-6-.8 3-2.5 5-5.5 6Z" fill="#123B2A"/>
+              </svg>
+            </div>
+            <span class="pfoot-name">PREDICROP</span>
+          </div>
+          <p class="pfoot-tagline">AI-powered intelligence for smarter farming decisions. Soil, weather, and crop health — all in one platform.</p>
+        </div>
+
+        <div>
+          <h3 class="pfoot-col-title">Platform</h3>
+          <div class="pfoot-links">
+            <a href="{{ url_for('crop_recommend') }}">Crop AI</a>
+            <a href="{{ url_for('fertilizer_recommendation') }}">Fertilizer</a>
+            <a href="{{ url_for('disease_prediction') }}">Disease Detection</a>
+            <a href="{{ url_for('weather') }}">Weather</a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="pfoot-col-title">Resources</h3>
+          <div class="pfoot-links">
+            <a href="{{ url_for('addinfo') }}">Soil Information</a>
+            <a href="{{ url_for('home') }}">Home</a>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="pfoot-col-title">Language</h3>
+          <div id="google_translate_element_footer" class="lang-mirror-wrap"></div>
+        </div>
+
+      </div>
+
+      <div class="pfoot-bottom">
+        <p class="pfoot-copy">© 2026 PREDICROP — Smart Crop Management Platform</p>
+        <p class="pfoot-lang">Built for Indian Agriculture</p>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+
+  <script>
+  // ---- Navbar scroll ----
+  const pnav = document.getElementById('pnav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    pnav.classList.toggle('scrolled', y > 40);
+    lastScroll = y;
+  }, { passive: true });
+
+  // ---- Mobile toggle ----
+  const toggle = document.getElementById('pnav-toggle');
+  const drawer = document.getElementById('pnav-mobile-drawer');
+  if (toggle && drawer) {
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', !open);
+      drawer.setAttribute('aria-hidden', open);
+      toggle.classList.toggle('open', !open);
+      drawer.classList.toggle('open', !open);
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        toggle.setAttribute('aria-expanded', 'false');
+        drawer.setAttribute('aria-hidden', 'true');
+        toggle.classList.remove('open');
+        drawer.classList.remove('open');
+      }
+    });
+  }
+
+  // ---- Scroll animation (IntersectionObserver) ----
+  const fadeEls = document.querySelectorAll('.fade-up');
+  if (fadeEls.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => io.observe(el));
+  }
+
+  // ---- Process steps animation ----
+  const processSteps = document.querySelectorAll('.process-step');
+  if (processSteps.length) {
+    const stepIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('animated');
+        }
+      });
+    }, { threshold: 0.3 });
+    processSteps.forEach((step, i) => {
+      setTimeout(() => stepIO.observe(step), i * 150);
+    });
+  }
+
+  // ---- NPK bars animation ----
+  function animateNPKBars() {
+    const bars = document.querySelectorAll('.npk-fill[data-value]');
+    bars.forEach(bar => {
+      const val = parseInt(bar.dataset.value);
+      const max = parseInt(bar.dataset.max || 200);
+      const pct = Math.min(100, Math.round(val / max * 100));
+      setTimeout(() => { bar.style.width = pct + '%'; }, 300);
+    });
+  }
+
+  // ---- Upload preview ----
+  function preview_image(event) {
+    const input = event.target;
+    const previewWrap = document.getElementById('upload-preview-wrap');
+    const previewImg = document.getElementById('upload-preview-img');
+    const uploadDefault = document.getElementById('upload-default');
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        if (previewImg) previewImg.src = e.target.result;
+        if (previewWrap) previewWrap.style.display = 'block';
+        if (uploadDefault) uploadDefault.style.display = 'none';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  // ---- Language dropdown toggle (hover alone does not work on touch) ----
+  const langBtn = document.getElementById('langBtn');
+  const langWrap = document.querySelector('.pnav-lang');
+  if (langBtn && langWrap) {
+    const setLangOpen = (open) => {
+      langWrap.classList.toggle('open', open);
+      langBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    langBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setLangOpen(!langWrap.classList.contains('open'));
+    });
+    document.addEventListener('click', (e) => {
+      if (!langWrap.contains(e.target)) setLangOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setLangOpen(false);
+    });
+  }
+
+  </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=initializeGoogleTranslate"></script>
+  <script>
+  var PREDICROP_LANGUAGES = [
+    ['', 'English (Original)'],
+    ['as', 'Assamese'],
+    ['bn', 'Bengali'],
+    ['gu', 'Gujarati'],
+    ['hi', 'Hindi'],
+    ['kn', 'Kannada'],
+    ['ml', 'Malayalam'],
+    ['mr', 'Marathi'],
+    ['pa', 'Punjabi (Gurmukhi)'],
+    ['ta', 'Tamil'],
+    ['te', 'Telugu'],
+    ['es', 'Spanish']
+  ];
+
+  var predicropTranslateReady = false;
+
+  function initializeGoogleTranslate() {
+    // element.js invokes this callback AND window 'load' fires afterwards, so
+    // without a guard the widget gets built twice and the second instance wins.
+    if (predicropTranslateReady) return;
+    if (!window.google || !google.translate) return;
+    if (!document.getElementById('google_translate_element')) return;
+    predicropTranslateReady = true;
+
+    // Google Translate supports exactly ONE widget per page. Creating a second
+    // TranslateElement silently leaves it empty, so the navbar owns the real
+    // widget and the mobile/footer selects just drive it.
+    var host = document.getElementById('google_translate_element');
+    if (!host) return;
+
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,as,bn,gu,hi,kn,ml,mr,pa,ta,te,es'
+    }, 'google_translate_element');
+
+    var combo = host.querySelector('.goog-te-combo');
+    if (!combo) return;
+
+    // Google re-applies the saved language on every page load, keyed off the
+    // 'googtrans' cookie ("/en/hi"). Clearing the <select> back to its
+    // placeholder does not undo it, so returning to English needs the cookie
+    // dropped and the page reloaded. Guarded on the cookie actually existing so
+    // a normal load can never trigger a reload loop.
+    function resetToEnglish() {
+      if (!/(^|;\s*)googtrans=/.test(document.cookie)) return false;
+      document.cookie.split(';').forEach(function (c) {
+        var name = c.split('=')[0].trim();
+        if (name.indexOf('googtrans') === 0) {
+          document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+        }
+      });
+      location.reload();
+      return true;
+    }
+
+    function applyLanguage(value) {
+      if (!value) { resetToEnglish(); return; }
+      combo.value = value;
+      combo.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    // Mirrors for the mobile drawer and the footer.
+    var mirrors = Array.prototype.slice.call(
+      document.querySelectorAll('.lang-mirror-wrap'));
+
+    mirrors.forEach(function (wrap) {
+      var sel = document.createElement('select');
+      sel.className = 'lang-mirror';
+      sel.setAttribute('aria-label', 'Select language');
+      PREDICROP_LANGUAGES.forEach(function (pair) {
+        var opt = document.createElement('option');
+        opt.value = pair[0];
+        opt.textContent = pair[1];
+        sel.appendChild(opt);
+      });
+      sel.value = combo.value;
+      sel.addEventListener('change', function () { applyLanguage(sel.value); });
+      wrap.appendChild(sel);
+    });
+
+    combo.addEventListener('change', function () {
+      if (!combo.value) { resetToEnglish(); return; }
+      mirrors.forEach(function (wrap) {
+        var sel = wrap.querySelector('.lang-mirror');
+        if (sel) sel.value = combo.value;
+      });
+    });
+  }
+  window.addEventListener('load', initializeGoogleTranslate);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+{% block title %}City Not Found — PREDICROP{% endblock %}
+
+{% block body %}
+
+<div class="error-page">
+  <div class="container" style="max-width:560px;text-align:center;">
+
+    <div class="error-icon">
+      <svg viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8.5"/>
+        <path d="M12 3.5c-3 3.5-3 13.5 0 17 3-3.5 3-13.5 0-17Z"/>
+        <path d="M3.5 12h17"/>
+      </svg>
+    </div>
+
+    <div style="display:inline-flex;align-items:center;gap:6px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber-dark);background:rgba(242,184,75,0.1);border:1px solid rgba(242,184,75,0.25);padding:5px 14px;border-radius:var(--radius-full);margin-bottom:var(--space-5);">
+      ⚠ WEATHER LOOKUP FAILED
+    </div>
+
+    <h1 class="error-title">City Not Recognised</h1>
+    <p class="error-desc">
+      The city you entered could not be matched to weather data, so a crop recommendation could not be generated. Please check the spelling or choose a nearby city and try again.
+    </p>
+
+    <div style="display:flex;gap:var(--space-4);justify-content:center;flex-wrap:wrap;">
+      <a href="{{ url_for('crop_recommend') }}" class="btn btn-forest btn-lg">Try Again</a>
+      <a href="{{ url_for('home') }}" class="btn btn-ghost-dark">Back to Home</a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

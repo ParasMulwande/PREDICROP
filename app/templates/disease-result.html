@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block title %}Disease Detection Result — PREDICROP{% endblock %}
+
+{% block body %}
+
+<div style="background:var(--forest);padding:var(--space-20) 0 calc(var(--space-20) + 60px);position:relative;overflow:hidden;">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(183,217,87,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(183,217,87,0.04) 1px,transparent 1px);background-size:48px 48px;" aria-hidden="true"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lime);display:flex;align-items:center;gap:8px;margin-bottom:var(--space-4);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      DISEASE DETECTION RESULT
+    </div>
+    <h1 style="font-family:var(--font-heading);font-size:clamp(1.5rem,3vw,2.5rem);font-weight:800;color:var(--white);letter-spacing:-0.03em;line-height:1.1;">Leaf Analysis Complete</h1>
+  </div>
+</div>
+
+<div style="background:var(--warm-white);padding-bottom:var(--space-20);">
+  <div class="container" style="max-width:800px;margin-top:-60px;position:relative;z-index:2;">
+
+    <div class="result-card-elevated">
+
+      <div style="text-align:center;padding:var(--space-8) 0 var(--space-6);border-bottom:1px solid var(--gray-200);margin-bottom:var(--space-8);">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--fresh);background:rgba(46,125,82,0.08);border:1px solid rgba(46,125,82,0.2);padding:6px 16px;border-radius:var(--radius-full);margin-bottom:var(--space-4);">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          AI ANALYSIS COMPLETE
+        </div>
+        <h2 style="font-family:var(--font-heading);font-size:1.5rem;font-weight:700;color:var(--charcoal);margin-bottom:var(--space-2);">Plant Health Report</h2>
+        <p style="font-size:0.875rem;color:var(--gray-400);">The uploaded leaf image was analyzed using the ResNet9 deep learning model.</p>
+      </div>
+
+      <div class="result-disease-content">
+        <h4>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:-2px;margin-right:5px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          DIAGNOSIS &amp; TREATMENT
+        </h4>
+        <div style="font-size:0.9375rem;color:var(--charcoal);line-height:1.75;">
+          {{ prediction }}
+        </div>
+      </div>
+
+      <div style="background:rgba(46,125,82,0.06);border:1px solid rgba(46,125,82,0.15);border-radius:var(--radius-md);padding:var(--space-5);margin-bottom:var(--space-8);">
+        <strong style="font-size:0.875rem;color:var(--forest);display:block;margin-bottom:var(--space-2);">What to do next</strong>
+        <p style="font-size:0.875rem;color:var(--gray-600);margin:0;line-height:1.65;">
+          Review the detected condition and use the provided symptoms, treatment, and prevention information to guide further action. If in doubt, consult a local agricultural extension officer.
+        </p>
+      </div>
+
+      <div class="result-actions-row">
+        <a href="{{ url_for('disease_prediction') }}" class="btn btn-forest btn-lg">
+          Analyze Another Image
+        </a>
+        <a href="{{ url_for('home') }}" class="btn btn-ghost-dark">
+          Back to Home
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

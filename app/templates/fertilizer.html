@@ -1,0 +1,148 @@
+{% extends 'layout.html' %}
+
+{% block title %}Fertilizer AI — PREDICROP{% endblock %}
+
+{% block body %}
+
+<div class="predict-page">
+
+  <!-- Hero -->
+  <div class="predict-hero">
+    <div class="container" style="position:relative;z-index:1;">
+      <span class="predict-hero-eyebrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2"/></svg>
+        FERTILIZER AI
+      </span>
+      <h1 class="predict-hero-title">Feed the Soil,<br>Not the Guesswork.</h1>
+      <p class="predict-hero-desc">Enter your crop and current soil nutrient levels. PREDICROP will identify which nutrient is most out of balance and recommend the right fertilizer.</p>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="predict-body">
+    <div class="container">
+      <div class="predict-layout">
+
+        <!-- Form -->
+        <div>
+          <div class="form-card">
+            <h2 class="form-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber-dark)" stroke-width="2" style="display:inline;vertical-align:-3px;margin-right:8px;"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2m-3.22-7.78 1.42-1.42M4.22 19.78l1.42-1.42"/></svg>
+              Soil &amp; Crop Details
+            </h2>
+
+            <form method="POST" action="{{ url_for('fert_recommend') }}" id="fert-form">
+
+              <div class="field-group">
+
+                <div class="field">
+                  <label for="crop">Crop You Want to Grow</label>
+                  <select id="crop" name="cropname" required>
+                    <option value="" disabled selected>Select crop…</option>
+                    <option>rice</option>
+                    <option>maize</option>
+                    <option>chickpea</option>
+                    <option>kidneybeans</option>
+                    <option>pigeonpeas</option>
+                    <option>mothbeans</option>
+                    <option>mungbean</option>
+                    <option>blackgram</option>
+                    <option>lentil</option>
+                    <option>pomegranate</option>
+                    <option>banana</option>
+                    <option>mango</option>
+                    <option>grapes</option>
+                    <option>watermelon</option>
+                    <option>muskmelon</option>
+                    <option>apple</option>
+                    <option>orange</option>
+                    <option>papaya</option>
+                    <option>coconut</option>
+                    <option>cotton</option>
+                    <option>jute</option>
+                    <option>coffee</option>
+                  </select>
+                  <span class="field-hint">Select your target crop</span>
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="fert-n">Nitrogen (N)</label>
+                    <input type="number" id="fert-n" name="nitrogen" placeholder="e.g. 50" min="0" max="200" required>
+                    <span class="field-hint">Current soil N value</span>
+                  </div>
+                  <div class="field">
+                    <label for="fert-p">Phosphorous (P)</label>
+                    <input type="number" id="fert-p" name="phosphorous" placeholder="e.g. 50" min="0" max="200" required>
+                    <span class="field-hint">Current soil P value</span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="fert-k">Potassium (K)</label>
+                  <input type="number" id="fert-k" name="pottasium" placeholder="e.g. 50" min="0" max="250" required>
+                  <span class="field-hint">Current soil K value</span>
+                </div>
+
+              </div>
+
+              <button type="submit" class="btn btn-forest btn-full btn-lg">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2"/></svg>
+                Analyze Nutrients
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Info panel -->
+        <div class="predict-info-panel">
+
+          <div class="info-panel-card" style="background:linear-gradient(135deg,#2a1a00,#3d2200);">
+            <div class="info-panel-card-title" style="color:var(--amber);">NUTRIENT OVERVIEW</div>
+            <div class="npk-visual">
+              <div class="npk-bar-item">
+                <div class="npk-bar-head">
+                  <span><strong style="color:white;">Nitrogen (N)</strong></span>
+                  <span style="color:var(--lime);font-size:0.75rem;">Leaf & Growth</span>
+                </div>
+                <div class="npk-track">
+                  <div class="npk-fill" style="width:60%;background:var(--lime);"></div>
+                </div>
+              </div>
+              <div class="npk-bar-item">
+                <div class="npk-bar-head">
+                  <span><strong style="color:white;">Phosphorous (P)</strong></span>
+                  <span style="color:var(--amber);font-size:0.75rem;">Roots & Flowers</span>
+                </div>
+                <div class="npk-track">
+                  <div class="npk-fill" style="width:45%;background:var(--amber);"></div>
+                </div>
+              </div>
+              <div class="npk-bar-item">
+                <div class="npk-bar-head">
+                  <span><strong style="color:white;">Potassium (K)</strong></span>
+                  <span style="color:var(--sky-mid);font-size:0.75rem;">Immunity & Quality</span>
+                </div>
+                <div class="npk-track">
+                  <div class="npk-fill" style="width:50%;background:var(--sky-mid);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:rgba(242,184,75,0.08);border:1px solid rgba(242,184,75,0.2);border-radius:var(--radius-xl);padding:var(--space-6);">
+            <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber-dark);margin-bottom:var(--space-4);">WHAT PREDICROP DOES</div>
+            <p style="font-size:0.875rem;color:var(--gray-600);line-height:1.65;margin:0;">
+              PREDICROP compares your current soil nutrient levels against the optimal target for your chosen crop. The nutrient with the largest gap — high or low — receives the recommendation.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

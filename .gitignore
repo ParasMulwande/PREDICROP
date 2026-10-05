@@ -1,0 +1,43 @@
+# ---- Secrets (never commit) -----------------------------------------------
+config_local.py
+.env
+.env.*
+*.key
+*.pem
+
+# ---- Python ----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- Virtual environments --------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+
+# ---- Duplicate / workspace-only artefacts ----------------------------------
+# These are anchored with a leading slash on purpose. An unanchored "models/"
+# would also match app/models/, which is required at runtime.
+# The root-level models/ folder holds byte-identical duplicates of the runtime
+# copies kept only for the offline ML workspace, so it is excluded to avoid
+# ~26 MB of duplicated binaries in the repository.
+/models/
+/notebooks/
+/Data-raw/
+/Data_to_consider/
+/References/
+/TEST_Project/
+/New Plant Diseases Dataset(Augmented)/
+
+# app/models/ IS committed - the app cannot predict without it.
+
+# ---- Editors / OS ----------------------------------------------------------
+.vscode/
+.idea/
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db

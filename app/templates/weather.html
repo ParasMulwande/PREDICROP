@@ -1,0 +1,193 @@
+{% extends 'layout.html' %}
+
+{% block title %}Weather Intelligence — PREDICROP{% endblock %}
+
+{% block body %}
+
+<!-- Hero -->
+<div class="weather-hero">
+  <div class="container" style="position:relative;z-index:1;">
+    <span style="display:inline-flex;align-items:center;gap:8px;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--sky-mid);background:rgba(221,239,240,0.12);border:1px solid rgba(221,239,240,0.2);padding:6px 14px;border-radius:var(--radius-full);margin-bottom:var(--space-5);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10Z"/></svg>
+      WEATHER INTELLIGENCE
+    </span>
+    <h1 style="font-family:var(--font-heading);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-0.03em;line-height:1.1;margin-bottom:var(--space-4);">
+      Plan Smarter with<br>Weather Insights
+    </h1>
+    <p style="font-size:1.0625rem;color:rgba(255,255,255,0.65);line-height:1.7;max-width:520px;margin-bottom:var(--space-6);">
+      Search for any city in India or use your current location to view live conditions and a 5-day farming forecast.
+    </p>
+
+    <div class="weather-search-block">
+      <div class="weather-search-row">
+        <input
+          type="text"
+          class="weather-city-input"
+          id="city-input-field"
+          placeholder="Enter a city, e.g. Nagpur"
+          autocomplete="off"
+          aria-label="City search"
+        >
+        <button class="btn btn-primary" id="weather-search-btn" style="border-radius:var(--radius-full);padding:14px 24px;">
+          Search
+        </button>
+        <button class="btn btn-secondary" id="weather-location-btn" style="border-radius:var(--radius-full);padding:14px 20px;" title="Use current location">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72 1.42 1.42M2 12h2m16 0h2m-3.22-7.78 1.42-1.42M4.22 19.78l1.42-1.42"/></svg>
+        </button>
+      </div>
+      <div class="weather-msg" id="weather-message" role="status"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Results -->
+<div class="weather-results" id="weather-results-area">
+  <div class="container">
+
+    <!-- Current weather -->
+    <div class="current-weather-card" id="current-weather" style="display:none;" aria-live="polite">
+      <div class="cw-left">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-2);">
+          <span style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--fresh);background:rgba(46,125,82,0.08);padding:3px 10px;border-radius:var(--radius-full);">CURRENT CONDITIONS</span>
+        </div>
+        <div class="cw-city" id="cw-city">—</div>
+        <div class="cw-date" id="cw-date">—</div>
+        <div class="cw-stats">
+          <div class="cw-stat">
+            <strong class="current-temp" id="cw-temp">—</strong>
+            <span>Temperature</span>
+          </div>
+          <div class="cw-stat">
+            <strong class="current-wind" id="cw-wind">—</strong>
+            <span>Wind Speed</span>
+          </div>
+          <div class="cw-stat">
+            <strong class="current-humidity" id="cw-humidity">—</strong>
+            <span>Humidity</span>
+          </div>
+        </div>
+      </div>
+      <div class="cw-right">
+        <img class="cw-icon" id="cw-icon" src="" alt="Weather icon">
+        <div class="cw-desc" id="cw-desc">—</div>
+      </div>
+    </div>
+
+    <!-- 5-day forecast -->
+    <section id="forecast-section" style="display:none;" aria-label="5-day forecast">
+      <div class="forecast-title-row">
+        <span style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray-400);">5-DAY FORECAST</span>
+        <h2>Upcoming Days</h2>
+      </div>
+      <div class="forecast-cards" id="forecast-grid"></div>
+    </section>
+
+  </div>
+</div>
+
+
+<script>
+const cityInput = document.getElementById('city-input-field');
+const searchBtn = document.getElementById('weather-search-btn');
+const locationBtn = document.getElementById('weather-location-btn');
+const currentWeather = document.getElementById('current-weather');
+const forecastSection = document.getElementById('forecast-section');
+const forecastGrid = document.getElementById('forecast-grid');
+const weatherMessage = document.getElementById('weather-message');
+
+function showMessage(msg, isError = false) {
+  weatherMessage.textContent = msg;
+  weatherMessage.className = isError ? 'weather-msg error' : 'weather-msg';
+}
+
+function clearMessage() {
+  weatherMessage.textContent = '';
+  weatherMessage.className = 'weather-msg';
+}
+
+function formatDate(str) {
+  return new Date(str).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' });
+}
+
+function formatShortDate(str) {
+  return new Date(str).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+}
+
+function createForecastCard(item) {
+  const temp = (item.main.temp - 273.15).toFixed(1);
+  const icon = item.weather[0].icon;
+  const desc = item.weather[0].description;
+  return `
+    <article class="forecast-card">
+      <div class="forecast-date">${formatShortDate(item.dt_txt)}</div>
+      <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${desc}" class="forecast-icon">
+      <div class="forecast-temp">${temp}°C</div>
+      <div class="forecast-desc">${desc}</div>
+      <div class="forecast-meta">
+        <span>💨 ${item.wind.speed} m/s</span>
+        <span>💧 ${item.main.humidity}%</span>
+      </div>
+    </article>`;
+}
+
+function renderWeather(city, forecast) {
+  if (!forecast || !forecast.length) { showMessage('No forecast data available.', true); return; }
+  const current = forecast[0];
+  document.getElementById('cw-city').textContent = city;
+  document.getElementById('cw-date').textContent = formatDate(current.dt_txt);
+  document.getElementById('cw-temp').textContent = `${(current.main.temp - 273.15).toFixed(1)}°C`;
+  document.getElementById('cw-wind').textContent = `${current.wind.speed} m/s`;
+  document.getElementById('cw-humidity').textContent = `${current.main.humidity}%`;
+  document.getElementById('cw-desc').textContent = current.weather[0].description;
+  document.getElementById('cw-icon').src = `https://openweathermap.org/img/wn/${current.weather[0].icon}@4x.png`;
+  currentWeather.style.display = 'grid';
+
+  const uniqueDays = [];
+  const daily = forecast.filter(item => {
+    const d = new Date(item.dt_txt).toDateString();
+    if (!uniqueDays.includes(d)) { uniqueDays.push(d); return true; }
+    return false;
+  }).slice(0, 5);
+
+  forecastGrid.innerHTML = daily.map(createForecastCard).join('');
+  forecastSection.style.display = 'block';
+  clearMessage();
+}
+
+async function getWeather(city) {
+  if (!city) { showMessage('Please enter a city name.', true); return; }
+  showMessage('Loading weather…');
+  try {
+    const res = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Unable to fetch weather data.');
+    renderWeather(data.city, data.forecast);
+  } catch(e) {
+    showMessage(e.message || 'Unable to fetch weather information.', true);
+    currentWeather.style.display = 'none';
+    forecastSection.style.display = 'none';
+  }
+}
+
+searchBtn.addEventListener('click', () => getWeather(cityInput.value.trim()));
+cityInput.addEventListener('keyup', e => { if (e.key === 'Enter') getWeather(cityInput.value.trim()); });
+
+locationBtn.addEventListener('click', () => {
+  if (!navigator.geolocation) { showMessage('Geolocation not supported.', true); return; }
+  showMessage('Detecting your location…');
+  navigator.geolocation.getCurrentPosition(
+    async pos => {
+      try {
+        const res = await fetch(`/api/weather?city=${encodeURIComponent(`${pos.coords.latitude},${pos.coords.longitude}`)}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Unable to detect weather.');
+        renderWeather(data.city, data.forecast);
+      } catch(e) { showMessage('Unable to fetch weather for your location.', true); }
+    },
+    () => showMessage('Location access was denied or unavailable.', true)
+  );
+});
+</script>
+
+{% endblock %}

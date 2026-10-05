@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block title %}Crop Recommendation — PREDICROP{% endblock %}
+
+{% block body %}
+
+<div style="background:var(--forest);padding:var(--space-20) 0 calc(var(--space-20) + 60px);position:relative;overflow:hidden;" class="result-hero-banner">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(183,217,87,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(183,217,87,0.04) 1px,transparent 1px);background-size:48px 48px;" aria-hidden="true"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="result-hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      CROP AI RESULT
+    </div>
+    <h1 class="result-hero-title">Your Crop Recommendation</h1>
+  </div>
+</div>
+
+<div style="background:var(--warm-white);padding-bottom:var(--space-20);">
+  <div class="container" style="max-width:800px;margin-top:-60px;position:relative;z-index:2;">
+
+    <div class="result-card-elevated">
+
+      <div class="result-prediction-display">
+        <span class="result-prediction-label">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:-2px;margin-right:4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          AI RECOMMENDED CROP
+        </span>
+        <div class="result-prediction-value">
+          🌾 {{ prediction }}
+        </div>
+        <div class="result-confidence" aria-label="Confidence level">
+          <div class="confidence-ring" aria-hidden="true">
+            <span>AI</span>
+          </div>
+          <div>
+            <p style="font-size:0.75rem;color:var(--gray-400);">Based on your soil profile &amp; local weather</p>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:1rem;color:var(--gray-600);line-height:1.7;margin-bottom:var(--space-8);text-align:center;">
+        Based on the soil nutrients, pH, rainfall, and local weather conditions you provided, PREDICROP recommends this crop as a suitable option for your field.
+      </p>
+
+      <div class="result-insights">
+        <div class="result-insight-card">
+          <h4>Nitrogen (N)</h4>
+          <p>Supports plant growth, leaf development, and overall vegetative health.</p>
+        </div>
+        <div class="result-insight-card">
+          <h4>Phosphorous (P)</h4>
+          <p>Promotes strong root development, flowering and fruiting processes.</p>
+        </div>
+        <div class="result-insight-card">
+          <h4>Potassium (K)</h4>
+          <p>Regulates water use, disease resistance and overall crop quality.</p>
+        </div>
+        <div class="result-insight-card">
+          <h4>Soil pH &amp; Rainfall</h4>
+          <p>Influence nutrient availability, water retention and crop suitability.</p>
+        </div>
+      </div>
+
+      <div class="result-actions-row">
+        <a href="{{ url_for('crop_recommend') }}" class="btn btn-forest btn-lg">
+          Try Another Prediction
+        </a>
+        <a href="{{ url_for('home') }}" class="btn btn-ghost-dark">
+          Back to Home
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

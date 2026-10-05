@@ -1,0 +1,169 @@
+{% extends 'layout.html' %}
+
+{% block title %}Soil Intelligence — PREDICROP{% endblock %}
+
+{% block body %}
+
+<!-- Hero -->
+<div class="soil-hero">
+  <div class="container" style="position:relative;z-index:1;">
+    <span style="display:inline-flex;align-items:center;gap:8px;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lime);background:rgba(183,217,87,0.12);border:1px solid rgba(183,217,87,0.25);padding:6px 14px;border-radius:var(--radius-full);margin-bottom:var(--space-5);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22V12m0 0c0-5 3.5-8 8-8.5-1 5-3.5 8-8 8.5Z"/></svg>
+      SOIL INTELLIGENCE
+    </span>
+    <h1 style="font-family:var(--font-heading);font-size:clamp(1.8rem,4vw,3rem);font-weight:800;color:var(--white);letter-spacing:-0.03em;line-height:1.1;margin-bottom:var(--space-4);">Understanding Your Soil</h1>
+    <p style="font-size:1.0625rem;color:rgba(255,255,255,0.65);line-height:1.7;max-width:540px;">Soil testing helps farmers understand nutrient availability, soil condition, and the factors that influence crop growth and yield.</p>
+  </div>
+</div>
+
+<!-- Nutrient cards quick summary -->
+<div style="background:var(--warm-white);padding:var(--space-16) 0;">
+  <div class="container">
+
+    <div style="margin-bottom:var(--space-10);" class="fade-up">
+      <span class="section-eyebrow">KEY NUTRIENTS</span>
+      <h2 class="section-title" style="margin-top:0.75rem;">What the Soil Contains</h2>
+    </div>
+
+    <div class="soil-cards-grid fade-up">
+
+      <div class="soil-nutrient-card">
+        <h3>🌿 Nitrogen (N)</h3>
+        <p>Nitrogen is essential for leaf and stem growth. It is a key component of chlorophyll and amino acids. Deficiency causes yellowing of older leaves and stunted growth. Excess can cause excessive vegetative growth at the expense of fruiting.</p>
+      </div>
+
+      <div class="soil-nutrient-card">
+        <h3>🌱 Phosphorous (P)</h3>
+        <p>Phosphorus supports root development, flowering, and seed production. It is critical for energy transfer and photosynthesis. Deficiency often causes purpling of leaves and weak root systems. Most available in slightly acidic to neutral soils.</p>
+      </div>
+
+      <div class="soil-nutrient-card">
+        <h3>💧 Potassium (K)</h3>
+        <p>Potassium regulates water uptake, disease resistance, and overall crop quality. It activates enzymes and controls stomata. Deficient crops show scorched leaf margins and poor fruit development. Critical for drought tolerance.</p>
+      </div>
+
+      <div class="soil-nutrient-card">
+        <h3>⚗️ Soil pH</h3>
+        <p>Soil pH determines nutrient availability and microbial activity. Most crops grow best between pH 6.0–7.0. Acidic soils (below 5.5) lock up phosphorus; alkaline soils (above 7.5) can cause iron and zinc deficiency. Test before amending.</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- What is soil testing -->
+<div style="background:var(--gray-100);padding:var(--space-16) 0;">
+  <div class="container">
+
+    <div class="section-header fade-up">
+      <span class="section-eyebrow">SOIL TESTING</span>
+      <h2 class="section-title">What Is Soil Testing?</h2>
+    </div>
+
+    <div class="soil-section-block fade-up">
+      <h2>About Soil Testing</h2>
+      <p>Soil testing is a process of determining the chemical, physical and biological properties of soil. It is used to determine the suitability of soil for different agricultural applications, such as crop growing and food production.</p>
+      <p>First, the soil sample is collected, weighed, and then placed in a container to preserve the moisture content. The sample is then taken to a laboratory where it is analyzed for pH, nitrogen, and phosphorus levels, among other things.</p>
+      <p>The data collected from soil tests are used to determine how much fertilizer should be added to an area to ensure proper nutrient levels are maintained throughout the growing season.</p>
+    </div>
+
+    <div class="soil-section-block fade-up">
+      <h2>How To Get Your Soil Tested</h2>
+      <div class="soil-options-list">
+        <div class="soil-option-item">
+          <span class="soil-option-num">01</span>
+          <div>
+            <h3>DIY Testing Kits</h3>
+            <p>Test your soil at home with specialized soil testing kits available at agricultural stores. Quick, affordable, and suitable for basic N-P-K and pH checks.</p>
+          </div>
+        </div>
+        <div class="soil-option-item">
+          <span class="soil-option-num">02</span>
+          <div>
+            <h3>Professional Laboratory Testing</h3>
+            <p>Send soil samples to a state or private agricultural laboratory for comprehensive analysis. Provides detailed reports including micronutrients, organic matter, and amendment recommendations.</p>
+          </div>
+        </div>
+        <div class="soil-option-item">
+          <span class="soil-option-num">03</span>
+          <div>
+            <h3>Government Soil Health Card Scheme</h3>
+            <p>The Indian government's Soil Health Card (SHC) scheme provides free soil testing through Krishi Vigyan Kendras and state agricultural departments. Every farmer is eligible.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="soil-section-block fade-up">
+      <h2>What Does a Soil Test Tell You?</h2>
+      <p>The goal of soil testing is to determine nutrient balances so they can be adjusted to support healthy plant growth. Soil tests can help identify nutrients that are missing from the soil and guide the addition of fertilizer or compost.</p>
+      <p>Soil tests can also identify excess nutrients and provide information about pH levels, helping determine whether plants need more acidic or alkaline conditions. One of the most common tests measures nitrogen (N), phosphorus (P), and potassium (K) — commonly referred to as NPK tests.</p>
+    </div>
+
+    <div class="soil-section-block fade-up">
+      <h2>Why Should Farmers Test Their Soil?</h2>
+      <div class="soil-options-list">
+        {% set reasons = [
+          ('Know soil condition before planting to maximize yields and minimize fertilizer costs.', '01'),
+          ('Improve crop performance by knowing nutrient levels and supplementing them as necessary.', '02'),
+          ('Maximize profitability by ensuring crops receive the nutrients they need to thrive.', '03'),
+          ('Determine whether crops need nutrients and how much fertilizer to apply.', '04'),
+          ('Identify crops that are more suitable for your soil and growing conditions.', '05'),
+          ('Understand which nutrients are missing from soil so crops receive what they need.', '06'),
+          ('Determine whether soil contains potentially harmful levels of heavy metals.', '07'),
+          ('Understand which crops may grow best based on nutrient levels and soil pH.', '08')
+        ] %}
+        {% for reason, num in reasons %}
+        <div class="soil-option-item">
+          <span class="soil-option-num">{{ num }}</span>
+          <div><p style="margin:0;font-size:0.9375rem;color:var(--gray-600);line-height:1.65;">{{ reason }}</p></div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="soil-section-block fade-up">
+      <h2>Frequently Asked Questions</h2>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-5);">
+
+        <div style="padding:var(--space-6);background:var(--warm-white);border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+          <h3 style="font-size:1rem;font-weight:700;color:var(--forest);margin-bottom:var(--space-3);">How can a farmer determine the nutrient content of a field?</h3>
+          <p style="font-size:0.9375rem;color:var(--gray-600);line-height:1.7;margin:0;">A farmer can collect soil samples from various locations across the field and send them to a testing laboratory for analysis. The laboratory can provide reports indicating nutrient levels, including nitrogen, phosphorus, and potassium.</p>
+        </div>
+
+        <div style="padding:var(--space-6);background:var(--warm-white);border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+          <h3 style="font-size:1rem;font-weight:700;color:var(--forest);margin-bottom:var(--space-3);">What does a soil sample report tell you?</h3>
+          <p style="font-size:0.9375rem;color:var(--gray-600);line-height:1.7;margin-bottom:var(--space-4);">A soil sample report typically provides information about:</p>
+          <div style="display:flex;flex-wrap:wrap;gap:var(--space-3);">
+            {% for item in ['Soil pH', 'Nutrient levels (N, P, K)', 'Organic matter content', 'Soil texture', 'Fertilizer / amendment recommendations'] %}
+            <span style="background:var(--forest);color:var(--lime);font-size:0.8rem;font-weight:600;padding:5px 14px;border-radius:var(--radius-full);">{{ item }}</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div style="padding:var(--space-6);background:var(--warm-white);border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+          <h3 style="font-size:1rem;font-weight:700;color:var(--forest);margin-bottom:var(--space-3);">Does soil need to be dry for testing?</h3>
+          <p style="font-size:0.9375rem;color:var(--gray-600);line-height:1.7;margin:0;">A soil sample generally needs to be slightly moist rather than completely dry. It is recommended to collect the sample when the soil is at field capacity — meaning it holds together when squeezed but is not overly saturated. This allows better mixing and analysis of the soil sample.</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <span class="section-eyebrow" style="justify-content:center;color:var(--lime);">READY TO START?</span>
+    <h2 class="cta-title">Put Your Soil Data to Work</h2>
+    <p class="cta-sub">Enter your N, P, K, and pH readings and let PREDICROP identify the best crop for your field.</p>
+    <a href="{{ url_for('crop_recommend') }}" class="btn btn-primary btn-lg">Analyze My Field →</a>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'layout.html' %}
+
+{% block title %}Crop AI — PREDICROP{% endblock %}
+
+{% block body %}
+
+<div class="predict-page">
+
+  <!-- Hero -->
+  <div class="predict-hero">
+    <div class="container" style="position:relative;z-index:1;">
+      <span class="predict-hero-eyebrow">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        CROP AI
+      </span>
+      <h1 class="predict-hero-title">Find the Right Crop<br>for Your Field</h1>
+      <p class="predict-hero-desc">Enter your soil and environmental conditions and let PREDICROP identify the most suitable crop using machine learning.</p>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="predict-body">
+    <div class="container">
+      <div class="predict-layout">
+
+        <!-- Form -->
+        <div>
+          <div class="form-card">
+            <h2 class="form-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fresh)" stroke-width="2" style="display:inline;vertical-align:-3px;margin-right:8px;"><path d="M12 22V12m0 0c0-5 3.5-8 8-8.5-1 5-3.5 8-8 8.5Z"/><path d="M12 16c0-4-2.5-6.5-7-7 .8 4.2 3 7 7 7Z"/></svg>
+              Soil & Environment Data
+            </h2>
+
+            <form method="POST" action="{{ url_for('crop_prediction') }}" id="crop-form">
+
+              <div class="field-group">
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="Nitrogen">Nitrogen (N)</label>
+                    <input type="number" id="Nitrogen" name="nitrogen" placeholder="e.g. 90" min="0" max="200" required>
+                    <span class="field-hint">Typical range: 0–140</span>
+                  </div>
+                  <div class="field">
+                    <label for="Phosphorous">Phosphorous (P)</label>
+                    <input type="number" id="Phosphorous" name="phosphorous" placeholder="e.g. 42" min="0" max="200" required>
+                    <span class="field-hint">Typical range: 4–145</span>
+                  </div>
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="Pottasium">Potassium (K)</label>
+                    <input type="number" id="Pottasium" name="pottasium" placeholder="e.g. 43" min="0" max="250" required>
+                    <span class="field-hint">Typical range: 5–205</span>
+                  </div>
+                  <div class="field">
+                    <label for="ph">Soil pH</label>
+                    <input type="number" id="ph" name="ph" step="0.01" placeholder="e.g. 6.5" min="0" max="14" required>
+                    <span class="field-hint">Enter measured soil pH</span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label for="Rainfall">Rainfall (mm)</label>
+                  <input type="number" id="Rainfall" name="rainfall" step="0.01" placeholder="e.g. 200" min="0" required>
+                  <span class="field-hint">Annual or seasonal rainfall in mm</span>
+                </div>
+
+                <div class="field-row">
+                  <div class="field">
+                    <label for="sts">State</label>
+                    <select onchange="print_city('state', this.selectedIndex);" id="sts" name="stt" required>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="state">City</label>
+                    <select id="state" name="city" required>
+                    </select>
+                  </div>
+                </div>
+
+                <script>if (typeof print_state === 'function') { print_state('sts'); }</script>
+
+              </div>
+
+              <button type="submit" class="btn btn-forest btn-full btn-lg" id="crop-submit-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                Analyze Field
+              </button>
+
+            </form>
+          </div>
+        </div>
+
+        <!-- Info panel -->
+        <div class="predict-info-panel">
+
+          <div class="info-panel-card">
+            <div class="info-panel-card-title">SOIL NUTRIENT GUIDE</div>
+            <div class="npk-visual">
+              <div class="npk-bar-item">
+                <div class="npk-bar-head">
+                  <span><strong>Nitrogen (N)</strong></span>
+                  <span style="color:var(--lime);font-size:0.75rem;">Growth</span>
+                </div>
+                <div class="npk-track">
+                  <div class="npk-fill nitrogen" data-value="90" data-max="140"></div>
+                </div>
+              </div>
+              <div class="npk-bar-item">
+                <div class="npk-bar-head">
+                  <span><strong>Phosphorous (P)</strong></span>
+                  <span style="color:var(--amber);font-size:0.75rem;">Roots</span>
+                </div>
+                <div class="npk-track">
+                  <div class="npk-fill phosphorus" data-value="42" data-max="145"></div>
+                </div>
+              </div>
+              <div class="npk-bar-item">
+                <div class="npk-bar-head">
+                  <span><strong>Potassium (K)</strong></span>
+                  <span style="color:var(--sky-mid);font-size:0.75rem;">Health</span>
+                </div>
+                <div class="npk-track">
+                  <div class="npk-fill potassium" data-value="43" data-max="205"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-xl);padding:var(--space-6);">
+            <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--fresh);margin-bottom:var(--space-4);">HOW THIS WORKS</div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+              <div style="display:flex;gap:var(--space-3);align-items:flex-start;">
+                <span style="width:24px;height:24px;background:var(--forest);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--lime);flex-shrink:0;">1</span>
+                <p style="font-size:0.875rem;color:var(--gray-600);margin:0;">Fill in your soil nutrient readings from a soil test report.</p>
+              </div>
+              <div style="display:flex;gap:var(--space-3);align-items:flex-start;">
+                <span style="width:24px;height:24px;background:var(--forest);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--lime);flex-shrink:0;">2</span>
+                <p style="font-size:0.875rem;color:var(--gray-600);margin:0;">Select your state and city to pull live temperature & humidity data.</p>
+              </div>
+              <div style="display:flex;gap:var(--space-3);align-items:flex-start;">
+                <span style="width:24px;height:24px;background:var(--forest);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;color:var(--lime);flex-shrink:0;">3</span>
+                <p style="font-size:0.875rem;color:var(--gray-600);margin:0;">PREDICROP's RandomForest model matches your inputs to the best crop.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Animate NPK bars on load
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof animateNPKBars === 'function') animateNPKBars();
+  else {
+    document.querySelectorAll('.npk-fill[data-value]').forEach(bar => {
+      const v = parseInt(bar.dataset.value);
+      const m = parseInt(bar.dataset.max || 200);
+      setTimeout(() => { bar.style.width = Math.min(100, Math.round(v/m*100)) + '%'; }, 300);
+    });
+  }
+});
+</script>
+
+{% endblock %}
