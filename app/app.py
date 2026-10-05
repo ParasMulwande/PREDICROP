@@ -170,7 +170,7 @@ def predict_image(img, model=None):
     from torchvision import transforms
 
     transform = transforms.Compose([
-        transforms.Resize(256),
+        transforms.Resize((256, 256)),
         transforms.ToTensor(),
     ])
     image = Image.open(io.BytesIO(img))
@@ -178,7 +178,8 @@ def predict_image(img, model=None):
     img_u = torch.unsqueeze(img_t, 0)
 
     # Get predictions from model
-    yb = model(img_u)
+    with torch.inference_mode():
+        yb = model(img_u)
     # Pick index with highest probability
     _, preds = torch.max(yb, dim=1)
     prediction = disease_classes[preds[0].item()]
@@ -197,6 +198,7 @@ app.static_folder = 'static'
 # for the life of the process. Without this, template edits are served stale
 # until the server is restarted.
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # render home page
 
