@@ -174,6 +174,7 @@ def predict_image(img, model=None):
         transforms.ToTensor(),
     ])
     image = Image.open(io.BytesIO(img))
+    image.draft('RGB', (256, 256))
     img_t = transform(image)
     img_u = torch.unsqueeze(img_t, 0)
 
