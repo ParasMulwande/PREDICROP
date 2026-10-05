@@ -17,6 +17,16 @@ rather than crashing.
 """
 import os
 
+# Values that mean "not actually configured". Treating them as empty avoids a
+# confusing 401 from the weather API when a placeholder is left in place.
+_PLACEHOLDERS = {
+    "",
+    "your-key-here",
+    "paste-your-openweathermap-key-here",
+    "your new rotated openweather api key",
+    "your_openweather_key",
+}
+
 weather_api_key = os.environ.get("OPENWEATHER_KEY", "").strip()
 
 if not weather_api_key:
@@ -26,3 +36,6 @@ if not weather_api_key:
         pass
     else:
         weather_api_key = (_local_key or "").strip()
+
+if weather_api_key.strip("<>").strip().lower() in _PLACEHOLDERS:
+    weather_api_key = ""
